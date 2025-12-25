@@ -1,5 +1,5 @@
 migrations/
 __pycache__/
-!api/build/*
-!frontend/*
+!api/build/
+!frontend/
 frontend/.next/
