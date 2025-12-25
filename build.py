@@ -318,9 +318,7 @@ def build(directory, output_file):
 
 def main():
     directory = "./src/"  # Directory containing Python files
-    output_file = (
-        "frontend/src/app/api/build/main.build.py"  # Output file for merged code
-    )
+    output_file = "api/build/main.build.py"  # Output file for merged code
     build(directory, output_file)
 
 

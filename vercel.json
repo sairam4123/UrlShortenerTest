@@ -6,10 +6,9 @@
       "maxDuration": 60
     }
   },
-  "framework": "fastapi",
-  "devCommand": "yarn dev",
-  "installCommand": "yarn install",
-  "buildCommand": "yarn build",
+  "devCommand": "cd frontend && yarn dev",
+  "installCommand": "cd frontend && yarn install",
+  "buildCommand": "cd frontend && yarn build",
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -28,5 +27,6 @@
       "destination": "/"
     }
   ],
-  "trailingSlash": false
+  "trailingSlash": false,
+  "outputDirectory": "frontend/dist"
 }
