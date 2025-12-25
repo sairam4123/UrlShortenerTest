@@ -14,8 +14,8 @@ import { QueryProvider } from "@/lib/query";
 // });
 
 export const metadata: Metadata = {
-  title: "Sairam's URL Shortener",
-  description: "URL Shortener App built with Next.js and TypeScript",
+  title: "LnkUp.One - URL Shortener",
+  description: "Your go-to URL shortener for quick and easy link management.",
 };
 
 export default function RootLayout({

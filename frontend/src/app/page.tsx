@@ -4,9 +4,11 @@ import AliasChips from "@/@components/AliasChips";
 import { api } from "@/api/api";
 import { useDebounce } from "use-debounce";
 import Input from "@/@components/Input";
-import { Check, X } from "lucide-react";
+import { Check, Icon, X } from "lucide-react";
+import { siGithub } from "simple-icons";
 import { Button } from "@/@components/Button";
 import { motion } from "framer-motion";
+import { SimpleIcon } from "@/@components/SimpleIcons";
 
 export default function Home() {
   const [link, setLink] = useState("");
@@ -46,7 +48,7 @@ export default function Home() {
     checkValidityQuery.isLoading
   );
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-neutral-900 to-blue-900 text-white flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br flex-col from-black via-neutral-900 to-blue-900 text-white flex items-center justify-center">
       <motion.main className="w-full max-w-lg px-6 py-14 bg-black/30 backdrop-blur-md rounded-2xl shadow-[0_0_20px_-10px_rgba(0,123,255,0.4)] border border-blue-500/25">
         <motion.h1
           className="text-4xl font-bold tracking-tight mb-2 text-center"
@@ -226,6 +228,23 @@ export default function Home() {
           </motion.div>
         )}
       </motion.main>
+      <p className="text-center flex items-center justify-center flex-row gap-2 mt-6 font-light text-neutral-300 text-md">
+        Made with ❤️ by
+        <span className="font-semibold bg-gradient-to-r from-blue-500 to-blue-300 text-transparent bg-clip-text">
+          Sairam Mangeshkar
+        </span>
+        <SimpleIcon
+          name="siGithub"
+          className="mx-auto h-5 w-5 text-neutral-400 hover:text-neutral-200 transition cursor-pointer"
+          onClick={() =>
+            window.open("https://github.com/sairam4123/UrlShortenerTest")
+          }
+        />
+      </p>
+
+      <p className="absolute bottom-2  text-center font-light text-neutral-400 text-xs ">
+        © 2025. All rights reserved.
+      </p>
     </div>
   );
 }
