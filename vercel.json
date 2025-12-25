@@ -24,9 +24,9 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "destination": "/$1"
     }
   ],
   "trailingSlash": false,
-  "outputDirectory": "frontend/.next"
+  "outputDirectory": "."
 }
