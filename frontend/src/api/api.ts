@@ -10,12 +10,14 @@ import {
   LinkResponse,
 } from "./models";
 
-const getApiUrl = () =>
-  typeof window === "undefined"
-    ? "https://lnkup.one/api"
-    : typeof window && typeof window.location?.hostname?.startsWith("localhost")
-    ? "http://localhost:8000/api" // fallback server-side
-    : `https://${window.location.hostname}/api`;
+const getApiUrl = () => {
+  if (typeof window === "undefined") {
+    return "https://lnkup.one/api";
+  }
+
+  const isLocalhost = window.location?.hostname?.startsWith("localhost");
+  return isLocalhost ? "http://localhost:8000/api" : `https://${window.location.hostname}/api`;
+};
 
 function useSuggestAliases() {
   async function suggestAliases(url: string, count: number): Promise<string[]> {
