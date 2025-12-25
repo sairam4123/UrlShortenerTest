@@ -11,12 +11,12 @@
   "buildCommand": "cd frontend && yarn build",
   "rewrites": [
     {
-      "source": "/_next/static",
-      "destination": "/static"
+      "source": "/_next/static/:match*",
+      "destination": "/static/:match*"
     },
     {
-      "source": "/_next/server",
-      "destination": "/server"
+      "source": "/_next/server/:match*",
+      "destination": "/server/:match*"
     },
     {
       "source": "/api/(.*)",
