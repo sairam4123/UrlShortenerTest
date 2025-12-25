@@ -31,8 +31,12 @@
       "destination": "/api/build/main.build.py"
     },
     {
-      "source": "/(.*)",
-      "destination": "/server/app/$1"
+      "source": "/",
+      "destination": "/server/app/index.html"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/api/build/main.build.py"
     }
   ],
   "trailingSlash": false,
