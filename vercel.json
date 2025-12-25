@@ -23,13 +23,13 @@
       "destination": "/api/build/main.build.py"
     },
     {
+      "source": "/_next/(.*)",
+      "destination": "/"
+    },
+    {
       "source": "/(.*)",
       "destination": "/server/app/$1"
     }, 
-    {
-      "source": "/_next/(.*)",
-      "destination": "/static/"
-    }
   ],
   "trailingSlash": false,
   "outputDirectory": "frontend/.next"
