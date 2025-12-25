@@ -24,7 +24,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend/.next"
+      "destination": "/frontend/$1"
     }
   ],
   "trailingSlash": false,
