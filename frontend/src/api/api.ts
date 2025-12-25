@@ -8,7 +8,7 @@ import {
   LinkResponse,
 } from "./models";
 
-const apiUrl = "http://localhost:8000/api";
+const apiUrl = `http://${window.location.hostname}/api`;
 
 function useSuggestAliases() {
   async function suggestAliases(url: string, count: number): Promise<string[]> {
