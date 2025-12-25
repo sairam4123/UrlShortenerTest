@@ -15,7 +15,7 @@ Base = declarative_base()
 async_engine = create_async_engine(db_url, echo=True, future=True)
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession]:
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_sessionmaker(
         bind=async_engine,
         expire_on_commit=False,

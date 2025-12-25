@@ -35,6 +35,20 @@ uv run uvicorn src.main:app --reload --port 8000
   - Preserves decorators and function signatures
   - **Note:** Never edit `api/build/main.build.py` directly - it's auto-generated
 
+### Python 3.12 Notes
+
+- This project targets Python 3.12 (see `requires-python` in [pyproject.toml](pyproject.toml)).
+- Verify your interpreter: `python --version` should report 3.12.x.
+- If you have multiple Python versions installed, explicitly create a 3.12 venv:
+
+```bash
+py -3.12 -m venv .venv
+.venv\Scripts\activate
+uv sync
+```
+
+- Alternatively, `uv` will honor the version in `pyproject.toml`; ensure Python 3.12 is installed on your system.
+
 ### Alternative install without uv
 
 ```bash
