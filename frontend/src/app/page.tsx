@@ -213,7 +213,7 @@ export default function Home() {
 
         {shortenedUrl && (
           <motion.div
-            className="mt-6 px-4 py-3 flex flex-row bg-neutral-900/70 rounded-lg border border-blue-500/30 shadow shadow-blue-800/40"
+            className="mt-6 px-4 py-3 flex flex-row items-center  bg-neutral-900/70 rounded-lg border border-blue-500/30 shadow shadow-blue-800/40"
             initial={{ opacity: 0, scale: 0.96, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -226,7 +226,7 @@ export default function Home() {
             </a>
 
             <Copy
-              className="flex ml-auto mr-3 h-5 w-5 text-neutral-400 hover:text-neutral-200 transition cursor-pointer"
+              className="flex ml-auto h-5 w-5 text-neutral-400 hover:text-neutral-200 transition cursor-pointer"
               onClick={() => {
                 navigator.clipboard.writeText(
                   `${window.location.origin}/${shortenedUrl}`
