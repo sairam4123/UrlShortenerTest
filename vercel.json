@@ -25,6 +25,10 @@
     {
       "source": "/(.*)",
       "destination": "/server/app/$1"
+    }, 
+    {
+      "source": "/_next/(.*)",
+      "destination": "/static/"
     }
   ],
   "trailingSlash": false,
