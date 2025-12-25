@@ -4,7 +4,7 @@ import AliasChips from "@/@components/AliasChips";
 import { api } from "@/api/api";
 import { useDebounce } from "use-debounce";
 import Input from "@/@components/Input";
-import { Check, Icon, X } from "lucide-react";
+import { Check, Copy, Icon, X } from "lucide-react";
 import { siGithub } from "simple-icons";
 import { Button } from "@/@components/Button";
 import { motion } from "framer-motion";
@@ -225,6 +225,15 @@ export default function Home() {
             >
               {window.location.origin}/{shortenedUrl}
             </a>
+
+            <Copy
+              className="inline-block ml-auto mr-3 h-5 w-5 text-neutral-400 hover:text-neutral-200 transition cursor-pointer"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/${shortenedUrl}`
+                );
+              }}
+            />
           </motion.div>
         )}
       </motion.main>
