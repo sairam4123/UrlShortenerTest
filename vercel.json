@@ -1,8 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "devCommand": "cd frontend && yarn dev",
-  "installCommand": "cd frontend && yarn install",
-  "buildCommand": "cd frontend && yarn build",
   "functions": {
     "api/build/main.build.py": {
       "runtime": "@vercel/python@4.6.0",
@@ -15,6 +12,5 @@
       "source": "/api/(.*)",
       "destination": "/api/build/main.build.py"
     }
-  ],
-  "outputDirectory": "frontend/"
+  ]
 }
