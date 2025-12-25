@@ -43,7 +43,7 @@ export default function RedirectPage() {
           <p className="text-center text-neutral-400 max-w-md">
             If you are not redirected automatically,
             <a
-              href={longUrl || (error as Error)?.cause || "/"}
+              href={longUrl || ((error as Error)?.cause as string) || "/"}
               className="text-blue-400 underline ml-1"
             >
               click here
