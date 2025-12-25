@@ -45,7 +45,7 @@
     },
     {
       "source": "/:path*",
-      "destination": "/server/app/:path*"
+      "destination": "/server/app/[alias]/"
     }
   ],
   "trailingSlash": false,
