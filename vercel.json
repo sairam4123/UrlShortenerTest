@@ -1,29 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "devCommand": "cd frontend && yarn dev",
   "installCommand": "cd frontend && yarn install",
   "buildCommand": "cd frontend && yarn build",
-  "devCommand": "cd frontend && yarn dev",
   "functions": {
     "api/build/main.build.py": {
       "runtime": "@vercel/python@4.6.0",
       "maxDuration": 60
-    },
-    "standalone/server.js": {
-      "runtime": "@vercel/node@20.0.0"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/build/main.build.py"
-    },
-    {
-      "source": "/_next/:path*",
-      "destination": "/static/:path*"
-    },
-    {
-      "source": "/:path*",
-      "destination": "/standalone/server.js"
     }
   ]
 }
