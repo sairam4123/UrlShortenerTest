@@ -20,7 +20,7 @@ import dotenv
 import fastapi
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import AnyHttpUrl, BaseModel, Field
-from sqlalchemy import DateTime, ForeignKey, Integer, String, func, select, update
+from sqlalchemy import DateTime, ForeignKey, Integer, NullPool, String, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import Mapped, declarative_base, mapped_column, relationship
 
@@ -39,7 +39,7 @@ if db_url is None:
 Base = declarative_base()
 
 
-async_engine = create_async_engine(db_url, echo=True, future=True)
+async_engine = create_async_engine(db_url, echo=True, future=True, poolclass=NullPool)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:

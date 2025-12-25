@@ -1,6 +1,7 @@
 from typing import AsyncGenerator
 import dotenv
 from sqlalchemy.orm import declarative_base
+from sqlalchemy import NullPool
 
 import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
@@ -12,7 +13,7 @@ if db_url is None:
     raise EnvironmentError("DATABASE_URL not set in environment variables")
 
 Base = declarative_base()
-async_engine = create_async_engine(db_url, echo=True, future=True)
+async_engine = create_async_engine(db_url, echo=True, future=True, poolclass=NullPool)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
