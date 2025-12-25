@@ -208,7 +208,7 @@ async def create_url(
 
     # return the Link
     return LinkResponse(
-        shortened_url=f"/{new_link.id}",
+        shortened_url=new_link.id,
         long_url=AnyHttpUrl(new_link.long_url),
         metadata=LinkMetadataResponse(
             custom_name=new_metadata.name if new_metadata.name != "" else None,
