@@ -29,7 +29,7 @@
     {
       "source": "/(.*)",
       "destination": "/server/app/$1"
-    }, 
+    }
   ],
   "trailingSlash": false,
   "outputDirectory": "frontend/.next"
