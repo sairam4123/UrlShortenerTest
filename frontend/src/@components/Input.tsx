@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes, ReactNode } from "react";
+import { motion } from "framer-motion";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rightIcon?: ReactNode;
@@ -29,44 +30,64 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     return (
-      <div className={`flex flex-col ${hidden ? "hidden" : ""}`}>
+      <div className={`flex flex-col gap-1 ${hidden ? "hidden" : ""}`}>
         {label && (
-          <label className="mb-2 text-sm font-medium text-neutral-400">
+          <label className="text-sm font-medium text-neutral-300">
             {label}
           </label>
         )}
+
         <div className="relative flex items-center">
           <input
             ref={ref}
             disabled={disabled}
-            className={`w-full px-4 py-2 border bg-neutral-900 rounded-md focus:outline-none focus:ring-2 ${
-              state === "error"
-                ? "border-red-500 focus:ring-red-500"
-                : state === "success"
-                ? "border-gray-300 focus:border-green-500 focus:ring-green-500"
-                : "border-neutral-600 focus:ring-blue-500"
-            } ${rightIcon || isLoading ? "pr-10" : ""} ${className}`}
+            className={`w-full px-4 py-2 rounded-md bg-neutral-900 border transition-all 
+              placeholder-neutral-500 text-white
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+              ${
+                state === "error"
+                  ? "border-red-500 focus:ring-red-500"
+                  : state === "success"
+                  ? "border-blue-400 focus:ring-blue-400"
+                  : "border-neutral-600"
+              }
+              ${rightIcon || isLoading ? "pr-10" : ""} 
+              ${className}`}
             {...props}
           />
+
+          {/* Loading Spinner */}
           {isLoading && (
-            <div className="absolute right-3 flex items-center text-gray-500">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
-            </div>
+            <motion.div
+              className="absolute right-3 flex items-center"
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 0.6, ease: "linear" }}
+            >
+              <div className="h-4 w-4 rounded-full border-2 border-neutral-500 border-t-blue-400" />
+            </motion.div>
           )}
+
+          {/* Success / Error Icon */}
           {!isLoading && rightIcon && (
-            <div className="absolute right-3 flex items-center text-gray-500">
+            <motion.div
+              className="absolute right-3"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            >
               {rightIcon}
-            </div>
+            </motion.div>
           )}
         </div>
+
         {state === "loading" && (
-          <p className="mt-1 text-sm text-neutral-400">{loadingText}</p>
+          <p className="text-sm text-neutral-400">{loadingText}</p>
         )}
         {state === "success" && (
-          <p className="mt-1 text-sm text-green-500">{successText}</p>
+          <p className="text-sm text-blue-400">{successText}</p>
         )}
         {state === "error" && (
-          <p className="mt-1 text-sm text-red-500">{errorText}</p>
+          <p className="text-sm text-red-500">{errorText}</p>
         )}
       </div>
     );

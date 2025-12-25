@@ -22,16 +22,36 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onPress}
       disabled={isLoading || disabled}
       className={cn(
-        "px-4 py-2 text-lg bg-blue-500 text-white rounded",
+        "px-5 py-3 text-base font-semibold rounded-md text-black",
+        "bg-gradient-to-r from-blue-600 to-blue-400",
+        "hover:from-blue-500 hover:to-blue-300 transition-all",
+        "shadow-md shadow-blue-900/40",
         isLoading || disabled
           ? "cursor-not-allowed opacity-60"
           : "cursor-pointer opacity-100",
         className
       )}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{
+        scale: disabled ? 1 : 1.03,
+      }}
+      whileTap={{
+        scale: disabled ? 1 : 0.95,
+      }}
     >
-      {isLoading ? "Loading..." : text}
+      {isLoading ? (
+        <span className="flex items-center gap-2">
+          Processing…
+          <motion.span
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 0.6, ease: "linear" }}
+            className="h-4 w-4 border-2 border-black/40 border-t-white rounded-full"
+          />
+        </span>
+      ) : (
+        text
+      )}
     </motion.button>
   );
 };
+
+export default Button;
