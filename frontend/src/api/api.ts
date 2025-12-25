@@ -11,7 +11,8 @@ import {
 } from "./models";
 
 const getApiUrl = () =>
-  typeof window === "undefined"
+  typeof window === "undefined" ||
+  (typeof window && typeof window.location?.hostname?.startsWith("localhost"))
     ? "http://localhost:8000/api" // fallback server-side
     : `https://${window.location.hostname}/api`;
 

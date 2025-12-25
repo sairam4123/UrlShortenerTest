@@ -47,7 +47,7 @@ export default function Home() {
   );
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-neutral-900 to-blue-900 text-white flex items-center justify-center">
-      <main className="w-full max-w-lg px-6 py-14 bg-black/30 backdrop-blur-md rounded-2xl shadow-xl shadow-blue-900/20 border border-blue-500/10">
+      <motion.main className="w-full max-w-lg px-6 py-14 bg-black/30 backdrop-blur-md rounded-2xl shadow-[0_0_20px_-10px_rgba(0,123,255,0.4)] border border-blue-500/25">
         <motion.h1
           className="text-4xl font-bold tracking-tight mb-2 text-center"
           initial={{ opacity: 0, y: -10 }}
@@ -82,114 +82,140 @@ export default function Home() {
         </motion.p>
 
         {/* URL Input */}
-        <div className="mb-6">
+        <motion.div
+          className="mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+        >
           <Input
-            label="Long URL"
-            placeholder="https://example.com/really-long-url"
+            label="Your URL"
+            placeholder="https://example.com/your-very/long/url"
             value={link}
             onChange={(e) => setLink(e.target.value)}
             disabled={shortenUrl.isPending}
           />
-        </div>
+        </motion.div>
 
         {/* Alias */}
 
+        {/* HEIGHT & SPACING WRAPPER */}
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{
             opacity: link ? 1 : 0,
             height: link ? "auto" : 0,
-            marginBottom: link ? "1.5rem" : "0rem", // prevents jank gap
           }}
           transition={{
             duration: 0.35,
             ease: "easeInOut",
           }}
-          className="bg-neutral-900/50 rounded-lg border border-blue-500/20 shadow-lg shadow-blue-700/10 overflow-hidden p-4"
+          className="overflow-hidden" // important
         >
-          <Input
-            label="Custom Alias (optional)"
-            placeholder="your-custom-alias"
-            value={alias}
-            onChange={(e) => setAlias(e.target.value)}
-            errorText={
-              alias && !checkValidityQuery.isLoading && !checkValidityQuery.data
-                ? "Alias is already taken"
-                : undefined
-            }
-            disabled={shortenUrl.isPending}
-            loadingText={
-              checkValidityQuery.isLoading ? "Checking availability..." : ""
-            }
-            isLoading={checkValidityQuery.isLoading}
-            successText={
-              alias && !checkValidityQuery.isLoading && checkValidityQuery.data
-                ? "Alias is available"
-                : undefined
-            }
-            state={
-              alias
-                ? checkValidityQuery.isLoading
-                  ? "loading"
-                  : checkValidityQuery.data
-                  ? "success"
-                  : "error"
-                : undefined
-            }
-            rightIcon={
-              alias && !checkValidityQuery.isLoading ? (
-                <motion.div
-                  layout
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                >
-                  {checkValidityQuery.data ? (
-                    <Check className="text-blue-400" />
-                  ) : (
-                    <X className="text-red-500" />
-                  )}
-                </motion.div>
-              ) : null
-            }
-          />
+          {/* ACTUAL CONTENT CONTAINER */}
+          <motion.div
+            animate={{
+              padding: link ? "1rem" : "0rem",
+              marginBottom: link ? "1.5rem" : "0rem",
+              borderWidth: link ? "1px" : "0px",
+            }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="bg-neutral-900/50 rounded-lg border border-blue-500/20 shadow-lg shadow-blue-700/10"
+          >
+            <Input
+              label="Custom Alias (optional)"
+              placeholder="your-custom-alias"
+              value={alias}
+              onChange={(e) => setAlias(e.target.value)}
+              errorText={
+                alias &&
+                !checkValidityQuery.isLoading &&
+                !checkValidityQuery.data
+                  ? "Alias is already taken"
+                  : undefined
+              }
+              disabled={shortenUrl.isPending}
+              loadingText={
+                checkValidityQuery.isLoading ? "Checking availability..." : ""
+              }
+              isLoading={checkValidityQuery.isLoading}
+              successText={
+                alias &&
+                !checkValidityQuery.isLoading &&
+                checkValidityQuery.data
+                  ? "Alias is available"
+                  : undefined
+              }
+              state={
+                alias
+                  ? checkValidityQuery.isLoading
+                    ? "loading"
+                    : checkValidityQuery.data
+                    ? "success"
+                    : "error"
+                  : undefined
+              }
+              rightIcon={
+                alias && !checkValidityQuery.isLoading ? (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                  >
+                    {checkValidityQuery.data ? (
+                      <Check className="text-blue-400" />
+                    ) : (
+                      <X className="text-red-500" />
+                    )}
+                  </motion.div>
+                ) : null
+              }
+            />
 
-          {link && (
-            <motion.div
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="mt-3"
-            >
-              <p className="text-sm text-neutral-400 -mb-2">Suggested</p>
-              <AliasChips
-                aliases={
-                  suggestAliasesMutation.isPending ? [] : suggestedAliases || []
-                }
-                onAliasSelected={setAlias}
-                length={3}
-              />
-            </motion.div>
-          )}
+            {link && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
+                className="mt-3"
+              >
+                <p className="text-sm text-neutral-400 -mb-2">Suggested</p>
+                <AliasChips
+                  aliases={
+                    suggestAliasesMutation.isPending
+                      ? []
+                      : suggestedAliases || []
+                  }
+                  onAliasSelected={setAlias}
+                  length={3}
+                />
+              </motion.div>
+            )}
+          </motion.div>
         </motion.div>
 
         {/* Shorten Button */}
-        <Button
-          onPress={() => shortenUrl.mutate({ url: link, alias })}
-          disabled={
-            shortenUrl.isPending || (!!alias && !checkValidityQuery.data)
-          }
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-300 text-black font-semibold"
-          text={shortenUrl.isPending ? "Processing..." : "Shorten"}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        >
+          <Button
+            onPress={() => shortenUrl.mutate({ url: link, alias })}
+            disabled={
+              shortenUrl.isPending || (!!alias && !checkValidityQuery.data)
+            }
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-300 text-black text-shadow-white/20 text-shadow-xs font-semibold"
+            text={shortenUrl.isPending ? "Processing..." : "Lnk Up!"}
+          />
+        </motion.div>
 
         {shortenedUrl && (
           <motion.div
             className="mt-6 px-4 py-3 bg-neutral-900/70 rounded-lg border border-blue-500/30 shadow shadow-blue-800/40"
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.96, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
           >
             <a
               href={shortenedUrl}
@@ -199,7 +225,7 @@ export default function Home() {
             </a>
           </motion.div>
         )}
-      </main>
+      </motion.main>
     </div>
   );
 }

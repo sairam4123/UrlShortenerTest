@@ -41,15 +41,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             disabled={disabled}
-            className={`w-full px-4 py-2 rounded-md bg-neutral-900 border transition-all 
+            className={`w-full px-4 py-2 rounded-lg bg-neutral-900/50 border transition-all 
               placeholder-neutral-500 text-white
-              focus:outline-none focus:ring-2 focus:ring-blue-500
+              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+              ${disabled ? "opacity-60 cursor-not-allowed" : ""}
               ${
                 state === "error"
-                  ? "border-red-500 focus:ring-red-500"
+                  ? "border-red-500/50 focus:ring-red-500 focus:border-red-500"
                   : state === "success"
-                  ? "border-blue-400 focus:ring-blue-400"
-                  : "border-neutral-600"
+                  ? "border-blue-400/50 focus:ring-blue-400 focus:border-blue-400"
+                  : "border-neutral-700 hover:border-neutral-600"
               }
               ${rightIcon || isLoading ? "pr-10" : ""} 
               ${className}`}
