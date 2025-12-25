@@ -20,12 +20,20 @@ Fast, minimalist link shortener composed of a FastAPI backend and a Next.js fron
 # Install dependencies
 uv sync
 
+# Build the merged API file (combines all src/ modules)
+python build.py
+
 # Run the API (reload + root path /api)
 uv run uvicorn src.main:app --reload --port 8000
 ```
 
 - API base URL locally: `http://localhost:8000/api`
 - Short-link data persists to `db.json` in the project root; delete the file to reset.
+- The `build.py` script merges all source files from `src/` into `api/build/main.build.py` for deployment
+  - Uses AST for robust parsing and dependency resolution
+  - Automatically deduplicates and organizes imports
+  - Preserves decorators and function signatures
+  - **Note:** Never edit `api/build/main.build.py` directly - it's auto-generated
 
 ### Alternative install without uv
 
