@@ -1,0 +1,21 @@
+[project]
+name = "urlshortenertest"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Sairam M", email = "sairam.m.2005.65@gmail.com" }]
+requires-python = ">=3.12,<4"
+readme = "README.md"
+license = "MIT"
+dependencies = [
+    "alembic>=1.17.2",
+    "asyncpg>=0.31.0",
+    "fastapi[all]>=0.127.0",
+    "python-dotenv>=1.1.1",
+    "sqlalchemy>=2.0.45",
+]
+
+[dependency-groups]
+dev = [
+    "psycopg2>=2.9.11",
+    "ruff>=0.14.10",
+]

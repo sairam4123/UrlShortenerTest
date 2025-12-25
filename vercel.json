@@ -1,0 +1,32 @@
+{
+  "functions": {
+    "api/build/main.build.py": {
+      "runtime": "@vercel/python@4.6.0",
+      "maxDuration": 60,
+      "memory": 256
+    }
+  },
+  "devCommand": "cd frontend && yarn dev",
+  "installCommand": "cd frontend && yarn install",
+  "buildCommand": "cd frontend && yarn build",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/build/main.build.py"
+    },
+    {
+      "source": "/inngest",
+      "destination": "/api/build/main.build.py"
+    },
+    {
+      "source": "/inngest/(.*)",
+      "destination": "/api/build/main.build.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+  "trailingSlash": false,
+  "outputDirectory": "frontend/dist"
+}
