@@ -134,6 +134,13 @@ function useRedirectLink(alias: string) {
   const query = useQuery({
     queryKey: ["redirectLink", alias],
     queryFn: () => redirectLink(alias),
+    retry: (failureCount, error) => {
+      // Do not retry on redirect errors
+      if ((error as Error).cause) {
+        return false;
+      }
+      return failureCount < 3;
+    },
   });
   return query;
 }
