@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   ErrorResponse,
@@ -8,12 +10,15 @@ import {
   LinkResponse,
 } from "./models";
 
-const apiUrl = `http://${window.location.hostname}/api`;
+const getApiUrl = () =>
+  typeof window === "undefined"
+    ? "http://localhost:8000/api" // fallback server-side
+    : `https://${window.location.hostname}/api`;
 
 function useSuggestAliases() {
   async function suggestAliases(url: string, count: number): Promise<string[]> {
     const response = await fetch(
-      `${apiUrl}/alias/suggest?long_url=${encodeURIComponent(
+      `${getApiUrl()}/alias/suggest?long_url=${encodeURIComponent(
         url
       )}&count=${count}`,
       {
@@ -40,7 +45,7 @@ function useShortenUrl() {
     if (alias) {
       body.name = alias;
     }
-    const response = await fetch(`${apiUrl}/url/create`, {
+    const response = await fetch(`${getApiUrl()}/url/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +74,7 @@ function useGetShortenedUrlMetadata(url: string) {
     url: string
   ): Promise<LinkResponse | ErrorResponse> {
     const response = await fetch(
-      `${apiUrl}/url/${encodeURIComponent(url)}/metadata`
+      `${getApiUrl()}/url/${encodeURIComponent(url)}/metadata`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch URL metadata");
@@ -91,7 +96,7 @@ function useGetShortenedUrlMetadata(url: string) {
 function useCheckAliasAvailability(alias: string) {
   async function checkAliasAvailability(alias: string): Promise<boolean> {
     const response = await fetch(
-      `${apiUrl}/alias/check?alias=${encodeURIComponent(alias)}`
+      `${getApiUrl()}/alias/check?alias=${encodeURIComponent(alias)}`
     );
     if (!response.ok) {
       throw new Error("Failed to check alias availability");
@@ -115,7 +120,7 @@ function useCheckAliasAvailability(alias: string) {
 function useRedirectLink(alias: string) {
   async function redirectLink(alias: string): Promise<string> {
     const response = await fetch(
-      `${apiUrl}/url/${encodeURIComponent(alias)}/redirect`
+      `${getApiUrl()}/url/${encodeURIComponent(alias)}/redirect`
     );
     if (!response.ok) {
       throw new Error("Failed to redirect link");
