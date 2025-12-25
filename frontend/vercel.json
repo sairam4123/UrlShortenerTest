@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/build/main.build.py": {
+      "runtime": "@vercel/python@4.6.0",
+      "maxDuration": 60
+    }
+  },
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/build/main.build.py"
+    }
+  ]
+}
