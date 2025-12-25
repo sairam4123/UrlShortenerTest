@@ -1,2 +1,3 @@
 # Ignore everything else
 !api/build/*
+!frontend/*
