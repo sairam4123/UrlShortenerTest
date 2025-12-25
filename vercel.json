@@ -34,9 +34,18 @@
       "source": "/",
       "destination": "/server/app/index.html"
     },
+
+    {
+      "source": "/favicon.ico",
+      "destination": "/server/app/favicon.ico"
+    },
+    {
+      "source": "/not_found",
+      "destination": "/server/app/not_found"
+    },
     {
       "source": "/:path*",
-      "destination": "/api/build/main.build.py"
+      "destination": "/server/app/:path*"
     }
   ],
   "trailingSlash": false,
