@@ -9,6 +9,7 @@
       "maxDuration": 60
     }
   },
+  "framework": "nextjs",
   "rewrites": [
     {
       "source": "/api/(.*)",
