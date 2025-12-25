@@ -28,5 +28,5 @@
     }
   ],
   "trailingSlash": false,
-  "outputDirectory": "frontend/dist"
+  "outputDirectory": "frontend/.next"
 }
