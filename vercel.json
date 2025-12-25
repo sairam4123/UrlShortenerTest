@@ -6,9 +6,9 @@
       "maxDuration": 60
     }
   },
-  "devCommand": "cd frontend && yarn dev",
-  "installCommand": "cd frontend && yarn install",
-  "buildCommand": "cd frontend && yarn build",
+  "devCommand": "yarn dev",
+  "installCommand": "yarn install",
+  "buildCommand": "yarn build",
   "rewrites": [
     {
       "source": "/api/(.*)",
