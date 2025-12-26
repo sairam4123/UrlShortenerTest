@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/lib/query";
-
+import { Toaster } from "sonner";
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
 //   subsets: ["latin"],
@@ -47,6 +47,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased`}>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

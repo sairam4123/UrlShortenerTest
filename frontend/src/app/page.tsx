@@ -8,6 +8,7 @@ import { Check, Copy, X } from "lucide-react";
 import { Button } from "@/@components/Button";
 import { motion } from "framer-motion";
 import { SimpleIcon } from "@/@components/SimpleIcons";
+import { toast } from "sonner";
 
 export default function Home() {
   const [link, setLink] = useState("");
@@ -16,6 +17,8 @@ export default function Home() {
   const [debouncedLink] = useDebounce(link, 500);
   const [debouncedAlias] = useDebounce(alias, 500);
   const [suggestedAliases, setSuggestedAliases] = useState<string[]>([]);
+
+  const [copyButtonPressed, setCopyButtonPressed] = useState(false);
 
   const shortenUrl = api.shorten_url.useMutation();
   const suggestAliasesMutation = api.suggested_aliases.useMutation();
@@ -48,7 +51,12 @@ export default function Home() {
   );
   return (
     <div className="min-h-screen bg-gradient-to-br flex-col from-black via-neutral-900 to-blue-900 text-white flex items-center justify-center">
-      <motion.main className="w-full max-w-lg px-6 py-14 bg-black/30 backdrop-blur-md rounded-2xl shadow-[0_0_20px_-10px_rgba(0,123,255,0.4)] border border-blue-500/25">
+      <motion.main
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full max-w-lg px-6 py-14 bg-black/30 backdrop-blur-md rounded-2xl shadow-[0_0_20px_-10px_rgba(0,123,255,0.4)] border border-blue-500/25"
+      >
         <motion.h1
           className="text-4xl font-bold tracking-tight mb-2 text-center"
           initial={{ opacity: 0, y: -10 }}
@@ -225,18 +233,30 @@ export default function Home() {
               {window.location.origin}/{shortenedUrl}
             </a>
 
-            <Copy
-              className="flex ml-auto h-5 w-5 text-neutral-400 hover:text-neutral-200 transition cursor-pointer"
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  `${window.location.origin}/${shortenedUrl}`
-                );
-              }}
-            />
+            {copyButtonPressed ? (
+              <Check className="flex ml-auto h-5 w-5 text-green-400 transition cursor-auto" />
+            ) : (
+              <Copy
+                className="flex ml-auto h-5 w-5 text-neutral-400 hover:text-neutral-200 transition cursor-pointer"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/${shortenedUrl}`
+                  );
+                  toast.success("Copied to clipboard!");
+                  setCopyButtonPressed(true);
+                  setTimeout(() => setCopyButtonPressed(false), 2000);
+                }}
+              />
+            )}
           </motion.div>
         )}
       </motion.main>
-      <p className="text-center flex items-center justify-center flex-row gap-2 mt-6 font-light text-neutral-300 text-md">
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="text-center flex items-center justify-center flex-row gap-2 mt-6 font-light text-neutral-300 text-md"
+      >
         Made with ❤️ by
         <span className="font-semibold bg-gradient-to-r from-blue-500 to-blue-300 text-transparent bg-clip-text">
           Sairam Mangeshkar
@@ -248,11 +268,16 @@ export default function Home() {
             window.open("https://github.com/sairam4123/UrlShortenerTest")
           }
         />
-      </p>
+      </motion.p>
 
-      <p className="absolute bottom-2  text-center font-light text-neutral-400 text-xs ">
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
+        className="absolute bottom-2 text-center font-light text-neutral-400 text-xs "
+      >
         © 2025. All rights reserved.
-      </p>
+      </motion.p>
     </div>
   );
 }
