@@ -9,7 +9,9 @@ license = "MIT"
 dependencies = [
     "alembic>=1.17.2",
     "asyncpg>=0.31.0",
+    "beautifulsoup4>=4.14.3",
     "fastapi[all]>=0.127.0",
+    "google-genai>=1.57.0",
     "python-dotenv>=1.1.1",
     "sqlalchemy>=2.0.45",
 ]

@@ -42,3 +42,7 @@ class LinkAliasSuggestionResponse(BaseModel):
 class LinkURLExistenceResponse(BaseModel):
     long_url: AnyHttpUrl
     exists: bool
+
+
+class LinkShortUrlSuggestionsResponse(BaseModel):
+    suggested_names: list[str]

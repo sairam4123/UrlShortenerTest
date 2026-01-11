@@ -18,7 +18,9 @@ from typing import AsyncGenerator, Optional
 
 import dotenv
 import fastapi
+from bs4 import BeautifulSoup
 from fastapi.middleware.cors import CORSMiddleware
+from google.genai import Client as GenAIClient
 from pydantic import AnyHttpUrl, BaseModel, Field
 from sqlalchemy import DateTime, ForeignKey, Integer, NullPool, String, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -93,6 +95,32 @@ class LinkAliasSuggestionResponse(BaseModel):
 class LinkURLExistenceResponse(BaseModel):
     long_url: AnyHttpUrl
     exists: bool
+
+
+class LinkShortUrlSuggestionsResponse(BaseModel):
+    suggested_names: list[str]
+
+
+
+# ===== From utils.py =====
+async def get_genai_client() -> GenAIClient:
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise EnvironmentError("GOOGLE_API_KEY not found in environment variables")
+    return GenAIClient(api_key=api_key)
+
+
+PROMPT = """
+You are a helpful assistant that generates concise and relevant names for URLs based on their content. Given a URL, provide a short, descriptive name that captures the essence of the webpage.
+For example, for the URL "https://www.example.com/articles/how-to-learn-python", a suitable name could be "learn-python", "learn-python-tutorial", or "python-basics". Include the reference from the webpage to ensure relevance.
+Provide {needed} suggestive names for the following URL: {url}
+Ensure that the names are unique, easy to remember, and do not contain special characters or spaces.
+Keep the text length of each name under 15 characters.
+The names must be URL-friendly (only alphanumeric characters and hyphens).
+
+The contents of the page linked by the URL is provided below for your reference.
+{text}
+"""
 
 
 
@@ -315,13 +343,60 @@ async def suggest_alias(
             "reason": "Count must be less than or equal to 10",
         }
 
+    # fetch metadata from the URL (title, description, etc.)
+    import httpx
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0"
+    }
+
+    try:
+        resp = httpx.get(long_url, timeout=5.0, follow_redirects=True, headers=headers)
+        if resp.status_code >= 400:
+            return {
+                "error": "NOT_FOUND",
+                "message": "The provided URL does not exist." + resp.text,
+            }
+    except httpx.RequestError as e:
+        return {
+            "error": "NOT_FOUND",
+            "message": "The provided URL does not exist or is unreachable. " + str(e),
+        }
+    
+    
+
+    client = await get_genai_client()
+    parsed_text = BeautifulSoup(resp.text, "html.parser").get_text(strip=True)
+    print(parsed_text[:500], "Parsed text preview")
+
     time_taken = time.time()
     # TODO: Integrate with AI as soon as possible
     aliases = set()
 
     while len(aliases) < count:
         need = count - len(aliases)
-        batch = {random_phrase(8) for _ in range(need * 2)}
+        print("parsed_text length:", len(parsed_text), parsed_text[:100])
+        ai_resp = await client.aio.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[
+                PROMPT.format(
+                    url=long_url, text=parsed_text[:5000], needed=int(need * 2)
+                )  # take first 5000 chars only from the page, double the needed count to avoid duplicates
+            ],
+            config={
+                "response_mime_type": "application/json",
+                "response_schema": LinkShortUrlSuggestionsResponse,
+            },
+        )
+
+        parsed = LinkShortUrlSuggestionsResponse.model_validate(ai_resp.parsed)
+        if not parsed.suggested_names:
+            return {
+                "error": "AI_ERROR",
+                "message": "Failed to generate alias suggestions from AI",
+            }
+        batch = set(parsed.suggested_names)
+
         existing = (
             await sql_db.execute(select(Link.id).where(Link.id.in_(batch)))
         ).scalars()
